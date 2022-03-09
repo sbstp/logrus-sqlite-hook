@@ -3,6 +3,7 @@ package logrussqlitehook
 import (
 	"database/sql"
 	"encoding/json"
+	"strings"
 	"time"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -53,7 +54,7 @@ func (h sqliteHook) Fire(entry *logrus.Entry) error {
 
 	_, err = h.db.Exec(
 		`INSERT INTO logs (level, time, message, data) VALUES (?, ?, ?, ?)`,
-		entry.Level.String(),
+		strings.ToUpper(entry.Level.String()),
 		entry.Time.Format(time.RFC3339Nano),
 		entry.Message,
 		data,
